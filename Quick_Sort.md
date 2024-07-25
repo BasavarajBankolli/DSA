@@ -18,7 +18,7 @@ def partition(arr,low,high):
           while not do:
               while left <= right and arr[left] <= piviotvalue:
     
-                            left = left + 1
+                            left =+ 1
               while right >= left and arr[right] >= piviotvalue:
                             right -= 1
     
