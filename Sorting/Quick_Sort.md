@@ -1,47 +1,57 @@
-### Python
-```python
-def quick(arr,low,high):
-    if low < high:
+### C++
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
 
-        splitpoint = partition(arr,low,high)
-        quick(arr,low,splitpoint-1)
-        quick(arr,splitpoint+1,high)
-          
-
-def partition(arr,low,high):
- 
-          left = low+1
-          right = high
-          piviotvalue = arr[low]
-
-          do = False
-          while not do:
-              while left <= right and arr[left] <= piviotvalue:
-                            left =+ 1
-
-              while right >= left and arr[right] >= piviotvalue:
-                            right -= 1
+int partition(vector<int>& arr, int low, int high) {
+    int left = low + 1;
+    int right = high;
+    int pivotValue = arr[low];
     
-              if right < left:
+    bool done = true;
+    while (done) {
+        while (left <= right && arr[left] <= pivotValue) {
+            left++;
+        }
+        
+        while (right >= left && arr[right] >= pivotValue) {
+            right--;
+        }
+        
+        if (right < left) {
+            done = false;
+        } else {
+            swap(arr[left], arr[right]);
+        }
+    }
     
-                    do = True
-              else:
+    arr[low] = arr[right];
+    arr[right] = pivotValue;
+    return right;
+}
 
-                   temp = arr[left]
-                   arr[left] = arr[right]
-                   arr[right] = temp
+void quick(vector<int>& arr, int low, int high) {
+    if (low < high) {
+        int splitPoint = partition(arr, low, high);
+        quick(arr, low, splitPoint - 1);
+        quick(arr, splitPoint + 1, high);
+    }
+}
 
-          
-          arr[low] = arr[right]
-          arr[right] = piviotvalue
-          return right
-      
-arr = [2,3,6,1,5]
-quick(arr,0,len(arr)-1)
-print(arr)
+int main() {
+    vector<int> arr = {2, 3, 6, 1, 5};
+    quick(arr, 0, arr.size() - 1);
+    
+    for (int num : arr) {
+        cout << num << " ";
+    }
+    cout << endl;
+    
+    return 0;
+}
+
 ```
-
 ## Output
 ```
-[1,2,3,5,6]
+1 2 3 5 6
 ```
