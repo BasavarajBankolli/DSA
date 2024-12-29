@@ -89,11 +89,13 @@ Node* removetail(Node* head){
 // 6.delete kth node from LL
 Node* delKth(Node* head, int k){
 
-    if (head == NULL) return head;
-    if ( k == 1) {
-    head = head -> next;
-    free(head);
-    return head;
+    if (head == NULL) return head; 
+
+    if (k == 1) { 
+        Node* temp = head;        
+        head = head->next;         
+        free(temp);                
+        return head;               
     }
 
     int cnt = 0;
