@@ -2,6 +2,7 @@
 
 ```cpp
 
+
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -20,6 +21,8 @@ class Node {
 
 // 1.convert Vactro to LL
 Node* convertVec(vector<int> &vec){
+    if (vec.empty()) return nullptr;
+
     Node* head = new Node(vec[0]);
     Node* mover = head;
 
@@ -76,7 +79,13 @@ Node* removehead(Node* head){
 Node* removetail(Node* head){
     Node* temp = head;
     
-    while(temp -> next -> next != NULL){
+    //Handle single-node linked lists
+    if (!head || !head->next) {
+        delete head;
+        return nullptr;
+    }
+
+    while(temp -> next -> next){
         temp = temp -> next;
     }
 
@@ -94,24 +103,28 @@ Node* delKth(Node* head, int k){
     if (k == 1) { 
         Node* temp = head;        
         head = head->next;         
-        free(temp);                
+        delete(temp);       // for memory deallocation..         
         return head;               
     }
 
     int cnt = 0;
     Node* dummy = head;
-    Node* prev = NULL;
+    Node* prev = nullptr;
 
-    while (dummy != NULL) {
-        cnt++;
+    while (dummy) {
         if (cnt == k){
-            prev -> next = prev -> next -> next;
-            free(dummy);
+            if (dummy -> next){
+                prev -> next = dummy -> next;
+            }
+            else {
+                prev -> next = nullptr;
+            } 
+            delete(dummy);
             break;
         }
         prev = dummy;
         dummy = dummy -> next;   
-
+        cnt++;
     }
     return head;
 }
@@ -120,10 +133,11 @@ Node* delKth(Node* head, int k){
 Node* delEle(Node* head, int ele){
 
     if (head == NULL) return head;
+
     if (head -> data == ele) {
     Node* temp = head;
     head = head -> next;
-    free(temp);
+    delete(temp);
     return head;
     }
 
@@ -132,9 +146,12 @@ Node* delEle(Node* head, int ele){
 
     while (dummy != NULL) {
         if ( dummy -> data == ele){
-            prev -> next = prev -> next -> next;
-            free(dummy);
-            break;
+            // Safeguard check for prev->next
+            if (prev != NULL) {
+                prev -> next = dummy -> next;
+            }
+            delete (dummy);
+            return head;
         }
         prev = dummy;
         dummy = dummy -> next;   
@@ -203,9 +220,7 @@ Node* inertK(Node* head, int posi, int v) {
 
 // 11.insert node before given element in LL
 Node* inertbeforeEle(Node* head, int ele, int v) {
-    if (head == NULL) {
-        NULL;
-    }
+    if (head == NULL) return head;
     
     Node* temp = new Node(v);
 
@@ -226,6 +241,7 @@ Node* inertbeforeEle(Node* head, int ele, int v) {
 
         dummy = dummy -> next ;
     }
+    delete temp;
     return head;
 
 }
@@ -285,39 +301,38 @@ int main(){
 
 }
   
-
 ```
 ### ouput
 ```
 1.Array to LL 
-  2 -> 4 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> 5 -> nullptr
+2 -> 4 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> 5 -> nullptr
 
 2.Length of LL is: 9
 
 3.Element exist: 1
 
 4.LL after deletion of head: 
-  4 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> 5 -> nullptr
+4 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> 5 -> nullptr
 
 5.LL after deletion of Tail:
-  4 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> nullptr
+4 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> nullptr
 
 6.LL after deletion of K th node:
-  4 -> 6 -> 7 -> 1 -> 2 -> 3 -> nullptr
+4 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> nullptr
 
 7.after delete node of given element from LL:
-  6 -> 7 -> 1 -> 2 -> 3 -> nullptr
+6 -> 7 -> 1 -> 2 -> 3 -> 4 -> nullptr
 
 8.after insert node to front of LL
-  9 -> 6 -> 7 -> 1 -> 2 -> 3 -> nullptr
+9 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> nullptr
 
 9.after insert node to rear of LL
-  9 -> 6 -> 7 -> 1 -> 2 -> 3 -> 10 -> nullptr
+9 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> 10 -> nullptr
 
 10.after insert node to k th position of LL
-  9 -> 20 -> 6 -> 7 -> 1 -> 2 -> 3 -> 10 -> nullptr
+9 -> 20 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> 10 -> nullptr
 
 11. after insert node to before given Element of LL
-  30 -> 9 -> 20 -> 6 -> 7 -> 1 -> 2 -> 3 -> 10 -> nullptr
+30 -> 9 -> 20 -> 6 -> 7 -> 1 -> 2 -> 3 -> 4 -> 10 -> nullptr
 
 ```
